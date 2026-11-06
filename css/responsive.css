@@ -1,0 +1,84 @@
+﻿/* La rejilla reserva encabezado y footer; solo el panel de escena se desplaza. */
+html, body { width: 100%; height: 100%; overflow: hidden; }
+#app { height: 100vh; height: 100dvh; width: 100%; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; isolation: isolate; }
+#app > header { height: auto; min-height: 0; padding-block: clamp(12px, 2.5dvh, 24px); }
+#app > footer { height: auto; min-height: 0; padding-block: clamp(10px, 2dvh, 18px); gap: 12px; }
+main#stage { height: auto; min-height: 0; min-width: 0; overflow: hidden; container-type: size; }
+.scene { height: 100%; min-height: 0; min-width: 0; padding: clamp(12px, 3cqh, 36px) clamp(20px, 4cqw, 75px); }
+.hero { display: grid; grid-template-columns: 54% 46%; align-items: stretch; overflow: visible; }
+.hero-copy { width: auto; min-width: 0; min-height: 0; display: flex; flex-direction: column; justify-content: center; gap: clamp(5px, 1.2cqh, 14px); pointer-events: none; z-index: 2; }
+.hero h1 { font-size: clamp(24px, min(6cqw, 10cqh), 100px); line-height: 1.02; letter-spacing: -.055em; margin: 0; }
+.hero .eyebrow { font-size: clamp(8px, 1.5cqh, 10px); line-height: 1.4; }
+.hero .subtitle { font-size: clamp(11px, 2.2cqh, 15px); line-height: 1.55; max-width: 440px; margin: 0; }
+.hero .primary { align-self: flex-start; margin: 0; padding: clamp(10px, 2.5cqh, 18px) 22px; font-size: clamp(9px, 1.8cqh, 11px); }
+.hero .academic { margin: 0; font-size: clamp(9px, 1.7cqh, 12px); line-height: 1.7; }
+.hero .members { margin: 0; gap: clamp(8px, 1.5cqw, 24px); font-size: clamp(8px, 1.6cqh, 11px); line-height: 1.55; flex-wrap: nowrap; }
+.members span { min-width: 0; }
+.hero .hero-footer { margin: 0; font-size: clamp(8px, 1.4cqh, 10px); gap: 18px; }
+.hero-visual { width: 56%; height: 100%; z-index: 0; overflow: hidden; }
+.hero-visual canvas { touch-action: none; }
+.hero-tag, .hero-hint { z-index: 1; pointer-events: none; font-size: clamp(8px, 1.3cqh, 10px); }
+.hero-tag { top: 5%; right: 4%; }
+.hero-hint { bottom: 4%; right: 4%; }
+.hero-copy button { position: relative; z-index: 3; }
+.scene-scroll { height: 100%; min-height: 0; overflow: auto; overscroll-behavior: contain; scrollbar-color: #754297 #120b1d; }
+aside { max-height: 100dvh; overscroll-behavior: contain; }
+dialog { max-height: 85dvh; max-width: min(600px, 90vw); overflow: auto; }
+.is-paused .live-dot { animation-play-state: paused !important; }
+
+@media (max-width: 1100px) {
+  .top-meta, .kbd, .scene-name { display: none; }
+  .content-grid { grid-template-columns: 1fr; }
+  .hero { grid-template-columns: 62% 38%; }
+  .hero-visual { width: 52%; }
+  .hero h1 { font-size: clamp(24px, min(7cqw, 10cqh), 80px); }
+  .hero-tag { letter-spacing: 1px; }
+  .hero-hint { max-width: 35%; text-align: right; line-height: 1.6; }
+}
+
+@media (max-width: 650px) {
+  #app > header { padding: 10px 18px; }
+  .brand { font-size: 21px; gap: 8px; }
+  .brand-icon { font-size: 28px; }
+  .brand small { font-size: 7px; }
+  .status { font-size: 8px; letter-spacing: .5px; }
+  #app > footer { padding: 10px 12px; gap: 6px; }
+  .footer-left, .footer-right { gap: 4px; }
+  footer button { padding: 8px 10px; min-width: 34px; min-height: 36px; }
+  footer .icon-btn { padding: 8px; }
+  .counter { font-size: 10px; letter-spacing: .5px; white-space: nowrap; }
+  .desktop-label { display: none; }
+  .scene { padding: clamp(10px, 2cqh, 22px) 20px; }
+  .hero { grid-template-columns: minmax(0, 1fr); }
+  .hero-copy { gap: clamp(6px, 1.5cqh, 14px); justify-content: center; }
+  .hero h1 { font-size: clamp(24px, min(10cqw, 10cqh), 62px); }
+  .hero .subtitle { font-size: clamp(10px, 2.3cqh, 13px); max-width: 95%; }
+  .hero .eyebrow { letter-spacing: 1.4px; font-size: 8px; }
+  .hero .members { font-size: clamp(8px, 1.7cqh, 10px); gap: 12px; }
+  .hero .hero-footer { font-size: 8px; flex-wrap: wrap; gap: 5px 12px; }
+  .hero-visual { width: 100%; top: auto; bottom: 0; height: 70%; opacity: .42; }
+  .hero-copy { background: linear-gradient(90deg, #090711b8, #09071120); }
+  .hero-tag, .hero-hint { display: none; }
+  .panel { padding: 18px; }
+  .content-grid { gap: 16px; }
+}
+
+@media (max-height: 500px) and (min-width: 651px) {
+  #app > header { padding-block: 7px; }
+  #app > footer { padding-block: 6px; }
+  .brand { font-size: 20px; }
+  .brand-icon { font-size: 25px; }
+  .hero-copy { gap: 5px; }
+  .hero .subtitle { font-size: 10px; line-height: 1.4; }
+  .hero .academic { font-size: 8px; line-height: 1.4; }
+  .hero .members { font-size: 8px; line-height: 1.4; }
+  .hero .hero-footer { font-size: 7px; }
+  .hero .primary { padding: 9px 16px; font-size: 9px; }
+  .hero h1 { font-size: clamp(22px, 11cqh, 44px); }
+}
+
+/* Ventanas excepcionalmente bajas: acceso al contenido dentro del panel. */
+@media (max-height: 380px) {
+  .hero-copy { overflow-y: auto; overscroll-behavior: contain; justify-content: flex-start; }
+}
+

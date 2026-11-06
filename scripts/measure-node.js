@@ -1,0 +1,12 @@
+import {mkdir,writeFile} from 'node:fs/promises';
+import {runAlgorithmChecks} from '../js/validation/checks.js';
+import {benchmarkSize} from '../js/simulation/benchmark.js';
+const environment=`Node.js ${process.version} / ${process.platform} ${process.arch}`;
+const tests=runAlgorithmChecks({environment});
+const benchmark=[300,3000,30000].map(n=>({...benchmarkSize(n),environment}));
+const report={at:new Date().toISOString(),environment,tests,benchmark,notes:'Mediciones reales en Node.js. No son mediciones de Chrome ni ejecución Python. Verificar de nuevo en el equipo de presentación.'};
+await mkdir('assets',{recursive:true});
+await writeFile('assets/validation-node.json',JSON.stringify(report,null,2));
+console.log(`${tests.passed}/${tests.total} comprobaciones algorítmicas aprobadas. Reporte: assets/validation-node.json`);
+console.table(benchmark.map(r=>({n:r.n,linearMs:r.linearMs,quadMs:r.quadMs,buildMs:r.buildMs,quadExamined:r.quadExamined})));
+if(tests.passed!==tests.total)process.exitCode=1;

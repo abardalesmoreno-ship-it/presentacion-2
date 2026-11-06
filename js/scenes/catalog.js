@@ -1,0 +1,20 @@
+// Catálogo de las diecisiete escenas y sus objetivos académicos.
+export const scenes = [
+  ['Portada cinematográfica', 'Presentación institucional e inicio de la experiencia.'],
+  ['Problema real', 'Simulación de pasajeros y conductores distribuidos en una ciudad.'],
+  ['Arquitectura del sistema', 'Pasajero → Quadtree → Candidatos → Heap → Dijkstra → ETA → Despachador → Conductor.'],
+  ['Red vial de Comas', 'Mapa de calles, nodos y aristas con identificación de datos reales y simulados.'],
+  ['Quadtree', 'Inserción, eliminación, actualización y búsqueda por regiones.'],
+  ['Haversine', 'Calculadora de distancia geográfica y explicación de la fórmula.'],
+  ['Heap', 'Selección interactiva de los K conductores más cercanos.'],
+  ['Dijkstra', 'Recorrido paso a paso, distancias, cola de prioridad y ruta final.'],
+  ['ETA', 'Estimación de llegada según distancia y velocidad.'],
+  ['Despachador', 'Comparación de candidatos y asignación por menor ETA.'],
+  ['Simulación de flota', 'Controles de cantidad, velocidad, disponibilidad y semilla.'],
+  ['Mapa interactivo', 'Selección de pasajero, vehículos, candidatos y rutas.'],
+  ['Benchmark', 'Mediciones reales de búsqueda lineal y Quadtree en este entorno.'],
+  ['Complejidad algorítmica', 'Comparación de complejidades promedio y de peor caso.'],
+  ['Pruebas automatizadas', 'Resultados de pruebas ejecutadas, separados de demostraciones.'],
+  ['Comparación tecnológica', 'Comparación de Quadtree, H3, Google S2, Geohash y árboles R.'],
+  ['Resultados y conclusiones', 'Logros, limitaciones, aplicaciones y cierre cinematográfico.'],
+].map(([title, description], index) => ({ id: index + 1, title, description, implemented: true }));

@@ -1,0 +1,134 @@
+{
+  "at": "2026-11-06T01:14:03.359Z",
+  "environment": "Node.js v26.13.0 / win32 x64",
+  "tests": {
+    "at": "2026-11-06T01:14:03.004Z",
+    "environment": "Node.js v26.13.0 / win32 x64",
+    "results": [
+      {
+        "name": "Quadtree vacío",
+        "passed": true,
+        "ms": 0.1817000000000064
+      },
+      {
+        "name": "Inserción y rechazo fuera del dominio",
+        "passed": true,
+        "ms": 0.12120000000000175
+      },
+      {
+        "name": "100 puntos coincidentes / profundidad máxima",
+        "passed": true,
+        "ms": 2.973699999999994
+      },
+      {
+        "name": "Eliminación por ID",
+        "passed": true,
+        "ms": 0.27669999999999106
+      },
+      {
+        "name": "Actualización y conservación ante posición inválida",
+        "passed": true,
+        "ms": 0.15170000000000528
+      },
+      {
+        "name": "Consulta rectangular coincide con búsqueda lineal",
+        "passed": true,
+        "ms": 3.670099999999991
+      },
+      {
+        "name": "Haversine: identidad, simetría y arco conocido",
+        "passed": true,
+        "ms": 0.2113999999999976
+      },
+      {
+        "name": "Haversine: coordenadas inválidas",
+        "passed": true,
+        "ms": 0.1747000000000014
+      },
+      {
+        "name": "Heap: extracción ordenada y selección top-K",
+        "passed": true,
+        "ms": 0.4666000000000139
+      },
+      {
+        "name": "Dijkstra: ruta óptima y traza consistente",
+        "passed": true,
+        "ms": 0.41500000000000625
+      },
+      {
+        "name": "Dijkstra: desconexión, origen igual y pesos negativos",
+        "passed": true,
+        "ms": 0.15160000000000196
+      },
+      {
+        "name": "ETA: fórmula y velocidad inválida",
+        "passed": true,
+        "ms": 0.08110000000000639
+      },
+      {
+        "name": "Despachador: ganador es disponible y tiene mínimo ETA",
+        "passed": true,
+        "ms": 5.226300000000009
+      },
+      {
+        "name": "Despachador: sin disponibilidad no hay asignación",
+        "passed": true,
+        "ms": 0.45239999999999725
+      }
+    ],
+    "passed": 14,
+    "total": 14,
+    "durationMs": 14.661100000000005
+  },
+  "benchmark": [
+    {
+      "n": 300,
+      "linearMs": 0.006208333333333371,
+      "quadMs": 0.006800000000000139,
+      "buildMs": 0.6055999999999955,
+      "linearExamined": 300,
+      "quadExamined": 18.541666666666668,
+      "visitedNodes": 32.166666666666664,
+      "found": 7.708333333333333,
+      "queries": 24,
+      "repeats": 5,
+      "seed": 42,
+      "checksum": 1850,
+      "source": "JavaScript",
+      "environment": "Node.js v26.13.0 / win32 x64"
+    },
+    {
+      "n": 3000,
+      "linearMs": 0.08037500000000009,
+      "quadMs": 0.050120833333333316,
+      "buildMs": 5.286000000000001,
+      "linearExamined": 3000,
+      "quadExamined": 90.625,
+      "visitedNodes": 113.33333333333333,
+      "found": 64.95833333333333,
+      "queries": 24,
+      "repeats": 5,
+      "seed": 42,
+      "checksum": 15590,
+      "source": "JavaScript",
+      "environment": "Node.js v26.13.0 / win32 x64"
+    },
+    {
+      "n": 30000,
+      "linearMs": 0.9160749999999993,
+      "quadMs": 0.1400791666666663,
+      "buildMs": 89.1011,
+      "linearExamined": 30000,
+      "quadExamined": 751.7916666666666,
+      "visitedNodes": 679.1666666666666,
+      "found": 678.875,
+      "queries": 24,
+      "repeats": 5,
+      "seed": 42,
+      "checksum": 162930,
+      "source": "JavaScript",
+      "environment": "Node.js v26.13.0 / win32 x64"
+    }
+  ],
+  "notes": "Mediciones reales en Node.js. No son mediciones de Chrome ni ejecución Python. Verificar de nuevo en el equipo de presentación."
+}

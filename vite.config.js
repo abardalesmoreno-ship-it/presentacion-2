@@ -1,0 +1,2 @@
+import { defineConfig } from 'vite';
+export default defineConfig({base:'./',build:{rollupOptions:{output:{manualChunks(id){if(!id.includes('node_modules'))return;if(id.includes('/three/'))return 'three';if(id.includes('/leaflet/'))return 'leaflet';if(id.includes('/chart.js/')||id.includes('/@kurkle/'))return 'charts';if(id.includes('/katex/')||id.includes('/commander/'))return 'formula';}}}},server:{port:5173,strictPort:true}});

@@ -1,0 +1,3 @@
+import {JSDOM} from 'jsdom';
+import {mountApp} from '../js/app.js';
+export function setupScene(id,services={},manualTimers=false){const dom=new JSDOM('<div id="app"></div>',{url:`http://localhost/#scene-${id}`});const {window}=dom;const timers=new Map();let timerId=0;if(manualTimers){window.setInterval=fn=>{timers.set(++timerId,fn);return timerId;};window.clearInterval=id=>timers.delete(id);}const app=mountApp({document:window.document,window,services,createCity:()=>()=>{}});return {...app,window,d:window.document,timers,tick(){[...timers.values()].forEach(fn=>fn());},close(){app.navigator.dispose();window.close();}};}

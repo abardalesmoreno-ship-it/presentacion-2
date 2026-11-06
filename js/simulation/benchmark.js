@@ -1,0 +1,17 @@
+import {makeFleet,makeTree,random} from './fleet.js';
+export function linearQuery(points,r){return points.filter(p=>p.x>=r.x&&p.x<=r.x+r.w&&p.y>=r.y&&p.y<=r.y+r.h);}
+const median=a=>a.slice().sort((x,y)=>x-y)[Math.floor(a.length/2)];
+export function benchmarkSize(n,{clock=()=>performance.now(),seed=42,queries=24,repeats=5}={}){
+ const points=makeFleet(n,seed),r=random(seed+1),regions=Array.from({length:queries},()=>({x:r()*.8,y:r()*.8,w:.15,h:.15}));const t0=clock(),tree=makeTree(points),buildMs=clock()-t0;
+ let examined=0,nodes=0,totalFound=0;for(const region of regions){const a=linearQuery(points,region),b=tree.queryWithStats(region);if(a.map(p=>p.id).sort((x,y)=>x-y).join()!==b.points.map(p=>p.id).sort((x,y)=>x-y).join())throw new Error('Las búsquedas no coinciden.');examined+=b.examinedPoints;nodes+=b.visitedNodes;totalFound+=b.points.length;}
+ // Calentamiento fuera de las muestras; medir lotes reduce el efecto del reloj.
+ for(const region of regions){linearQuery(points,region);tree.query(region);}
+ const line=[],quad=[];let checksum=0;for(let repeat=0;repeat<repeats;repeat++){const methods=repeat%2?['quad','line']:['line','quad'];for(const method of methods){const start=clock();for(const region of regions)checksum+=(method==='line'?linearQuery(points,region):tree.query(region)).length;(method==='line'?line:quad).push((clock()-start)/queries);}}
+ return {n,linearMs:median(line),quadMs:median(quad),buildMs,linearExamined:n,quadExamined:examined/queries,visitedNodes:nodes/queries,found:totalFound/queries,queries,repeats,seed,checksum,source:'JavaScript',environment:typeof navigator==='undefined'?'Node.js':navigator.userAgent};
+}
+export function parseCsv(text){const rows=[];let row=[],value='',quoted=false;for(let i=0;i<text.length;i++){const char=text[i];if(char==='"'){if(quoted&&text[i+1]==='"'){value+='"';i++;}else quoted=!quoted;}else if(char===','&&!quoted){row.push(value.trim());value='';}else if((char==='\n'||char==='\r')&&!quoted){if(char==='\r'&&text[i+1]==='\n')i++;row.push(value.trim());if(row.some(v=>v!==''))rows.push(row);row=[];value='';}else value+=char;}if(quoted)throw new Error('CSV con comillas sin cerrar.');row.push(value.trim());if(row.some(v=>v!==''))rows.push(row);return rows;}
+export function parseBenchmark(text,extension='json'){
+ text=text.replace(/^\uFEFF/,'');let source;if(extension==='csv'){const rows=parseCsv(text),keys=rows.shift();if(!keys)throw new Error('CSV vacío.');source=rows.map(row=>{if(row.length!==keys.length)throw new Error('Número de columnas CSV inconsistente.');return Object.fromEntries(keys.map((k,i)=>[k,row[i]]));});}else{const data=JSON.parse(text);source=Array.isArray(data)?data:data?.results;}
+ if(!Array.isArray(source)||!source.length||source.length>100)throw new Error('Se requiere un arreglo results con 1–100 mediciones.');
+ return source.map(row=>{const out={source:'Python importado (no ejecutado aquí)',environment:String(row.environment??'No declarado').slice(0,200)};for(const key of ['n','linearMs','quadMs','linearExamined','quadExamined']){if(row[key]===undefined||String(row[key]).trim()==='')throw new Error(`Falta ${key}.`);out[key]=Number(row[key]);if(!Number.isFinite(out[key])||out[key]<0)throw new Error(`Campo inválido: ${key}`);}if(!Number.isInteger(out.n)||out.n<1)throw new Error('n debe ser entero positivo.');if(out.linearExamined>out.n||out.quadExamined>out.n)throw new Error('Los elementos examinados no pueden superar n.');return out;});
+}

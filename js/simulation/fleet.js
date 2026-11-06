@@ -1,0 +1,11 @@
+import {Quadtree} from '../algorithms/quadtree.js';
+import {haversine,eta} from '../algorithms/haversine.js';
+import {nearestK} from '../algorithms/heap.js';
+import {dijkstra} from '../algorithms/dijkstra.js';
+export function random(seed=42){let s=seed>>>0;return ()=>{s=(1664525*s+1013904223)>>>0;return s/4294967296;};}
+export const geo=p=>({lat:-11.98+p.y*.07,lng:-77.075+p.x*.07});
+export function makeFleet(count=300,seed=42,availability=.8){const r=random(seed);return Array.from({length:count},(_,id)=>{const p={id,x:r(),y:r(),available:r()<availability};return {...p,...geo(p)};});}
+export function makeTree(points){const tree=new Quadtree();points.forEach(p=>tree.insert(p));return tree;}
+export function makeRoads(size=7){const nodes={},graph={};for(let y=0;y<size;y++)for(let x=0;x<size;x++){const id=String(y*size+x);nodes[id]={id,x:x/(size-1),y:y/(size-1),...geo({x:x/(size-1),y:y/(size-1)})};graph[id]=[];}for(const n of Object.values(nodes)){const i=+n.id,x=i%size,y=Math.floor(i/size);for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1]])if(x+dx>=0&&x+dx<size&&y+dy>=0&&y+dy<size){const to=String((y+dy)*size+x+dx);graph[n.id].push({to,weight:haversine(n,nodes[to])});}}return {nodes,graph};}
+export function nearestNode(p,nodes){return Object.values(nodes).reduce((best,n)=>haversine(n,p)<haversine(best,p)?n:best);}
+export function dispatch(fleet,passenger,k=8,speed=25,roads=makeRoads(),radius=.25){const region={x:passenger.x-radius,y:passenger.y-radius,w:radius*2,h:radius*2};const query=makeTree(fleet).queryWithStats(region);const available=query.points.filter(p=>p.available);const candidates=nearestK(available,passenger,k,haversine);const end=nearestNode(passenger,roads.nodes);const ranked=candidates.map(c=>{const start=nearestNode(c.point,roads.nodes),route=dijkstra(roads.graph,start.id,end.id,{trace:false});const km=route.distance+haversine(c.point,start)+haversine(end,passenger);return {...c,route,km,eta:eta(km,speed)};}).sort((a,b)=>a.eta-b.eta||a.point.id-b.point.id);return {ranked,winner:ranked[0]??null,region,diagnostics:{examinedPoints:query.examinedPoints,visitedNodes:query.visitedNodes,inRegion:query.points.length,available:available.length,k:candidates.length}};}
